@@ -253,7 +253,7 @@ public class Customer extends Person{
 	
 	//Updates the customer's order details in the database and adjusts the stock quantity.
 	public static void updateCusOrderToDB(int productID, int quantity, String location, double totalPrice, String UserName, String payment_status) throws SQLException {
-		String insert = "INSERT INTO DATABASE.CUST_ORDER_TABLE VALUES(?,?,?,?,?,?,?,?,?)";
+		String insert = "INSERT INTO DATABASE.CUST_ORDER_TABLE VALUES(?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps = MainClass.con.prepareStatement(insert);
 		ps.setInt(1, 100);
 		ps.setDate(2, Date.valueOf(LocalDate.now()));
@@ -264,6 +264,7 @@ public class Customer extends Person{
 		ps.setString(7, payment_status);
 		ps.setString(8, LoggedInCustomer.getUserName()); // Assuming getUserName returns the username
 		ps.setString(9, "Confirmed");
+		ps.setDate(10, Date.valueOf(LocalDate.now().plusDays(4)));
 		ps.executeUpdate();
 
     	
@@ -327,7 +328,7 @@ public class Customer extends Person{
 	
 	//Displays details of all customers in a formatted manner.
 	public static void displayAllCustomers() throws SQLException{
-		String display = "SELECT CUSTOMER_ID,FULLNAME,USERNAME,CONNUMBER,EMAIL,ADDRESS from DATABASE.cus";
+		String display = "SELECT CUSTOMER_ID,FULLNAME,USERNAME,CONNUMBER,EMAIL,ADDRESS from DATABASE.cus ORDER BY CUSTOMER_ID ASC";
 		Statement state = MainClass.con.createStatement();
 		ResultSet display1 = state.executeQuery(display);
 		System.out.println("Customer Details");
@@ -350,22 +351,22 @@ public class Customer extends Person{
 	
 	 //Displays details of customer orders
 	public static void viewOrders() throws SQLException {
-		String select = "Select * from DATABASE.CUST_ORDER_TABLE";
+		String select = "Select * from DATABASE.CUST_ORDER_TABLE ORDER BY ORDER_ID DESC";
 		Statement state = MainClass.con.createStatement();
 		ResultSet display = state.executeQuery(select);
 		System.out.println("Customer Order Details");
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%-10s %-15s %-12s %-8s %-15s %-10s %-10s %-20s %-15s\n",
-		        "ORDER_ID", "ORDER_DATE", "PRODUCT_ID", "QUANTITY", "LOCATION", "PRICE", "PAYMENT_STATUS", "CUSTOMER_NAME", "ORDER_STATUS");
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%-10s %-15s %-12s %-8s %-15s %-10s %-10s %-20s %-15s %-15s\n",
+		        "ORDER_ID", "ORDER_DATE", "PRODUCT_ID", "QUANTITY", "LOCATION", "PRICE", "PAYMENT_STATUS", "CUSTOMER_NAME", "ORDER_STATUS","DELIVERY_DATE");
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
 
 		while (display.next()) {
-		    System.out.printf("%-10s %-15s %-12s %-8s %-15s %-10.2f %-15s %-20s %-15s\n",
+		    System.out.printf("%-10s %-15s %-12s %-8s %-15s %-10.2f %-15s %-20s %-15s %-15s\n",
 		            display.getInt(1), display.getDate(2).toString(), display.getInt(3), display.getInt(4),
-		            display.getString(5), display.getDouble(6), display.getString(7), display.getString(8), display.getString(9));
+		            display.getString(5), display.getDouble(6), display.getString(7), display.getString(8), display.getString(9),display.getDate(10).toString());
 		}
 
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------");
+		System.out.println("--------------------------------------------------------------------------------------------------------------------------------------------------");
 	}
 }
 		

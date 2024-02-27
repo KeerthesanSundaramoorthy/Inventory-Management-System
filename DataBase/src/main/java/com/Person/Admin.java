@@ -106,7 +106,7 @@ public class Admin extends Person{
         boolean exitLogin = false;
         while(!exitLogin) {
         	System.out.println("------------------------------------------");
-        	System.out.println("|  			 Management Menu		     |");
+        	System.out.println("| 	     Management Menu 	        |");
         	System.out.println("------------------------------------------");
         	System.out.println("|  1. Inventory Management               |");
         	System.out.println("|  2. Supplier Management                |");
@@ -131,9 +131,10 @@ public class Admin extends Person{
 	            		System.out.println("|  1. Add a Product                      |");
 	            		System.out.println("|  2. Update a Product                   |");
 	            		System.out.println("|  3. Display a Product                  |");
-	            		System.out.println("|  4. Delete a Product                   |");
-	            		System.out.println("|  5. Return to Previous Menu            |");
-	            		System.out.println("|  6. Exit                               |");
+	            		System.out.println("|  4. Display a Stock Details            |");
+	            		System.out.println("|  5. Delete a Product                   |");
+	            		System.out.println("|  6. Return to Previous Menu            |");
+	            		System.out.println("|  7. Exit                               |");
 	            		System.out.println("------------------------------------------");
 
 	                    System.out.println("Enter Your Choice");
@@ -150,9 +151,12 @@ public class Admin extends Person{
 		                    	Product.displayProduct();
 		                        break;
 		                    case 4:
+		                    	Stock.displayStock();
+		                    	break;
+		                    case 5:
 		                    	Product.deleteProduct();
 		                        break;
-		                    case 5:
+		                    case 6:
 		                        System.out.println("Do you want to return to the previous menu? (Enter 1 for Yes, 2 for No)");
 		                        int returnChoice = sc.nextInt();
 		                        if (returnChoice == 1) {
@@ -167,7 +171,7 @@ public class Admin extends Person{
 		                            System.out.println("Invalid Choice.");
 		                        }
 		                        break;
-		                    case 6:
+		                    case 7:
 		                    	System.out.println("Exiting The Application.\nThank You!");
 		                        System.exit(0);
 		                        break;
@@ -432,11 +436,25 @@ public class Admin extends Person{
 		if(isAvailable) {
 			System.out.println("Enter the Admin Password");
 			String password = sc.nextLine();
+			while(!Account.validatePassword(password)) {
+				System.out.println("Invalid Password");
+				System.out.println("Password should contain minimum 8 chatacters,one Uppercase,one Lowercase, one number and one special character is allowed\nPlease Enter valid Password:");
+				password = sc.nextLine();
+			}
 			System.out.println("Enter the Admin Username");
 			String userName = sc.nextLine();
+			while(!Account.validateUserName(userName)) {
+				System.out.println("Invalid User Name");
+				System.out.println("User Name should contain minimum 10 chatacters,Alphanumeric and underscore is allowed\nPlease Enter valid User Name:");
+				userName = sc.nextLine();
+			}
 			System.out.println("Enter the Admin Email");
 			String email = sc.nextLine();
-					
+			while(!Account.validateEmail(email)) {
+				System.out.println("Invalid E-Mail ID");
+				System.out.println("E-Mail should contain only lowercase.Please enter E-mail");
+				email = sc.nextLine();
+			}		
 			Admin ob = new Admin(adminID,password,userName,email);
 			adminUpdateToDB(ob);
 		}
@@ -454,5 +472,4 @@ public class Admin extends Person{
 //			System.out.println(displayadmin.getInt(1)+"		"+displayadmin.getString(2)+"		"+displayadmin.getString(3)+"		"+displayadmin.getString(4)+"		"+displayadmin.getString(5));
 //		}
 	//}
-
 }

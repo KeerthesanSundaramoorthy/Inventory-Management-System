@@ -91,13 +91,25 @@ public class Stock {
 	
 	//Displays stock details including product ID, product category, stock quantity, and product price.
 	public static void displayStock() throws SQLException{
-		String display = "SELECT S.PRODUCT_ID, P.PRODUCT_CATEGORY, S.STOCK_QUANTITY, P.PRODUCT_PRICE FROM DATABASE.Stocks S JOIN DATABASE.Product P ON S.PRODUCT_ID = P.PRODUCT_ID";
+		String display = "SELECT S.PRODUCT_ID, P.PRODUCT_NAME,P.PRODUCT_CATEGORY, S.STOCK_QUANTITY, P.PRODUCT_PRICE FROM DATABASE.Stocks S JOIN DATABASE.Product P ON S.PRODUCT_ID = P.PRODUCT_ID ORDER BY PRODUCT_ID ASC";
 		Statement state = MainClass.con.createStatement();
 		ResultSet displaystock = state.executeQuery(display);
 		System.out.println("Stock Details");
-		System.out.println("PRODUCT_ID		PRODUCT_CATEGORY		STOCK_QUANTITY		PRODUCT_PRICE");
+		System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+		System.out.printf("%-12s %-20s %-20s %-15s %-8s\n",
+		        "PRODUCT_ID","PRODUCT_NAME", "PRODUCT_CATEGORY", "STOCK_QUANTITY", "PRODUCT_PRICE");
+		System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+
 		while(displaystock.next()) {
-			System.out.println(displaystock.getInt("PRODUCT_ID")+"		"+displaystock.getString("PRODUCT_CATEGORY")+"		"+displaystock.getInt("STOCK_QUANTITY")+"		"+displaystock.getDouble("PRODUCT_PRICE"));
+		    System.out.printf("%-12d %-20s %-20s %-15d %-8.2f\n",
+		            displaystock.getInt("PRODUCT_ID"),
+		            displaystock.getString("PRODUCT_NAME"),
+		            displaystock.getString("PRODUCT_CATEGORY"),
+		            displaystock.getInt("STOCK_QUANTITY"),
+		            displaystock.getDouble("PRODUCT_PRICE"));
 		}
+		System.out.println("-----------------------------------------------------------------------------------------------------------------------");
+
+
 	}
 }

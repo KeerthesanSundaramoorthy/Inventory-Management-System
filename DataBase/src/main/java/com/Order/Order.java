@@ -31,6 +31,7 @@ public class Order {
 	private Payment payStatus;
 	private String payment_status;
 	
+	
 	private int orderID;
 	private Date orderDate;
 	private int supplierID;
@@ -358,7 +359,7 @@ public class Order {
 	            boolean isCanceled = cancelOrderID(orderId);
 
 	            if (isCanceled) {
-	                System.out.println("Order cancelled and refunded successfully.");
+	                System.out.println("Order Cancelled and Refunded Initiated.");
 	                updateOrderToDB(orderId);  // Update order status in the database
 	            } else {
 	                System.out.println("Failed to cancel the order. Please try again later.");
@@ -383,7 +384,7 @@ public class Order {
 	}
 // method to view the order history by the admin from the database
 	public static void viewHistory() throws SQLException {
-		String display = "SELECT * from DATABASE.Orders";
+		String display = "SELECT * from DATABASE.Orders ORDER BY ORDER_ID DESC";
 		Statement state = MainClass.con.createStatement();
 		ResultSet displayOrder = state.executeQuery(display);
 		System.out.println("Order History");
@@ -460,17 +461,21 @@ public class Order {
 				                                Customer.updateCusOrderToDB(productID,quantity,location,totalPrice,LoggedInCustomer.getUserName(),payment_status);
 				                                int orderID = getOrderIdFromDatabase();
 				                                System.out.println("Order ID: " + orderID);
-				                            	Invoice.generateInvoice(orderID,LoggedInCustomer.getUserName());
+				                                System.out.println("The Delivery Date is "+getDeliveryDate(orderID));
+				                                Invoice.generateInvoice(orderID,LoggedInCustomer.getUserName());
 				                                exitOrder = true;
+				                                break;
 		                	                }
 		                	                else {
 		                		            	   System.out.println("Incorrect Password.");
 		                		               }
+		                	                
 		                		               count++;
 		                		               if(count == 4) {
 		                		            	   //System.out.println("You Have Reached the Maximum Attempts.");
 		                		            	   break;
 		                		               }
+		                		               break;
 		                	            }
 		                                break;
 		                            case 2:
@@ -479,6 +484,8 @@ public class Order {
 		                            	Customer.updateCusOrderToDB(productID,quantity,location,totalPrice,LoggedInCustomer.getUserName(),payment_Status);
 		                            	int orderId = getOrderIdFromDatabase();
 		                                System.out.println("Order ID: " + orderId);
+		                                System.out.println("The Delivery Date is "+getDeliveryDate(orderId));
+
 		                            	//Invoice.generateInvoice(orderId,LoggedInCustomer.getUserName());
 		                            	exitOrder = true;
 		                                break;
@@ -486,6 +493,7 @@ public class Order {
 		                                System.out.println("Invalid Choice");
 		                                break;
 		                        }
+		                        break;
 		                    } 
 		                    else {
 		                        System.out.println("Invalid Quantity or Out Of Stock. Please try again.");
@@ -505,6 +513,22 @@ public class Order {
 		}
 
 	}
+	
+	public static LocalDate getDeliveryDate(int orderID) throws SQLException {
+	    LocalDate deliveryDate = LocalDate.of(2024, 2, 22); // Set a default date
+
+	    String select = "SELECT DELIVERY_DATE FROM DATABASE.CUST_ORDER_TABLE WHERE ORDER_ID = ?";
+	    PreparedStatement ps = MainClass.con.prepareStatement(select);
+	    ps.setInt(1, orderID);
+	    ResultSet rs = ps.executeQuery();
+
+	    if (rs.next()) {
+	        deliveryDate = rs.getDate("DELIVERY_DATE").toLocalDate();
+	    }
+
+	    return deliveryDate;
+	}
+
 	//validates the customer password for payment process
 	static boolean validateCusPassword(String userName, String password) {
 		for (Customer ob : Customer.customerList) {
@@ -608,7 +632,7 @@ public class Order {
 	        boolean isPaid = checkCusPaymentStatus(orderId);
 	        if (isPaid) {
 	        	System.out.println("Payment is Done.");
-	            System.out.println("Order cancelled and refunded successfully.");
+	            System.out.println("Order cancelled and refunded initiated.");
 	            updateCusOrderToDB(orderId);  // Update order status in the database
 	        }
 	        else {

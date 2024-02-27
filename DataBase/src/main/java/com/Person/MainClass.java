@@ -34,7 +34,7 @@ public class MainClass {
 				System.out.println("|  Welcome to the ABC Inventory   |");
 				System.out.println("|        Management System        |");
 				System.out.println("-----------------------------------");
-				System.out.println("|     Enter Application as:       |");
+				System.out.println("|      Enter Application as       |");
 				System.out.println("|  1. Admin                       |");
 				System.out.println("|  2. Supplier                    |");
 				System.out.println("|  3. Customer                    |");

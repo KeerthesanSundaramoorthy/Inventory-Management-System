@@ -21,5 +21,4 @@ public class Notification {
 	public static void notifyPaymentDone() {
 		System.out.println("Payment for this order has already been completed.");
 	}
-
 }

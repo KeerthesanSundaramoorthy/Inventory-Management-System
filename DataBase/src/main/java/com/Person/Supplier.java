@@ -186,7 +186,7 @@ public class Supplier extends Person{
 			ps.setString(6,supplier.getAddress());
 			ps.setString(7,supplier.getPassword());
 			ps.executeUpdate();
-			System.out.println("Supplier added into the Database");
+			//System.out.println("Supplier added into the Database");
 	}
 	
 	//Adds a new supplier to the database and the supplierList.
@@ -199,6 +199,11 @@ public class Supplier extends Person{
 			sc.nextLine();
 			System.out.println("Enter the Supplier Password");
 			String password = sc.nextLine();
+			while(!Account.validatePassword(password)) {
+				System.out.println("Invalid Password");
+				System.out.println("Password should contain minimum 8 chatacters,one Uppercase,one Lowercase, one number and one special character is allowed\nPlease Enter valid Password:");
+				password = sc.nextLine();
+			}
 			System.out.println("Enter the Supplier Name");
 			String supplierName = sc.nextLine();
 			System.out.println("Enter the Contact Person");
@@ -206,8 +211,19 @@ public class Supplier extends Person{
 			System.out.println("Enter the Contact Number");
 			Long conNumber = sc.nextLong();
 			sc.nextLine();
+			while(!Account.validateNumber(conNumber)) {
+				System.out.println("Invalid Number");
+				System.out.println("Number should contain 10 digits.\nPlease enter valid number");
+				conNumber = sc.nextLong();
+				sc.nextLine();
+			}
 			System.out.println("Enter the Supplier Email");
 			String eMail = sc.nextLine();
+			while(!Account.validateEmail(eMail)) {
+				System.out.println("Invalid E-Mail ID");
+				System.out.println("E-Mail should contain only lowercase.Please enter E-mail");
+				eMail = sc.nextLine();
+			}
 			System.out.println("Enter the Supplier Address");
 			String address = sc.nextLine();
 			
@@ -258,11 +274,21 @@ public class Supplier extends Person{
 		sc.nextLine();
 		System.out.println("Enter the Supplier Password");
 		String password = sc.nextLine();
+		while(!Account.validatePassword(password)) {
+			System.out.println("Invalid Password");
+			System.out.println("Password should contain minimum 8 chatacters,one Uppercase,one Lowercase, one number and one special character is allowed\nPlease Enter valid Password:");
+			password = sc.nextLine();
+		}
 		System.out.println("Enter the Contact Person");
 		String conPerson = sc.nextLine();
 		System.out.println("Enter the Contact Number");
 		Long conNumber = sc.nextLong();
 		sc.nextLine();
+		while(!Account.validateNumber(conNumber)) {
+			System.out.println("Invalid Number");
+			System.out.println("Number should contain 10 digits.\nPlease enter valid number");
+			conNumber = sc.nextLong();
+		}
 		System.out.println("Enter the Supplier Address");
 		String address = sc.nextLine();
 		
@@ -275,11 +301,22 @@ public class Supplier extends Person{
 			Scanner sc = new Scanner(System.in);
 			System.out.println("Enter the Supplier Password");
 			String password = sc.nextLine();
+			while(!Account.validatePassword(password)) {
+				System.out.println("Invalid Password");
+				System.out.println("Password should contain minimum 8 chatacters,one Uppercase,one Lowercase, one number and one special character is allowed\nPlease Enter valid Password:");
+				password = sc.nextLine();
+			}
 			System.out.println("Enter the Contact Person");
 			String conPerson = sc.nextLine();
 			System.out.println("Enter the Contact Number");
 			Long conNumber = sc.nextLong();
 			sc.nextLine();
+			while(!Account.validateNumber(conNumber)) {
+				System.out.println("Invalid Number");
+				System.out.println("Number should contain 10 digits.\nPlease enter valid number");
+				conNumber = sc.nextLong();
+				sc.nextLine();
+			}
 			System.out.println("Enter the Supplier Address");
 			String address = sc.nextLine();
 			
@@ -288,28 +325,26 @@ public class Supplier extends Person{
 		}
 		
 	//Displays the details of all suppliers in a formatted manner.
-	public static void displaySupplier() throws SQLException{
-		String display = "SELECT SUPPLIER_ID,COMPANY_NAME,CONTACT_PERSON,CONTACT_NUMBER,EMAIL,ADDRESS from DATABASE.Supplier";
-		Statement state = MainClass.con.createStatement();
-		ResultSet displaysupplier = state.executeQuery(display);
-		System.out.println("Supplier Details");
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-		System.out.printf("%-12s %-20s %-18s %-17s %-30s %-25s\n",
-		        "SUPPLIER_ID", "COMPANY_NAME", "CONTACT_PERSON", "CONTACT_NUMBER", "EMAIL", "ADDRESS");
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	public static void displaySupplier() throws SQLException {
+	    String display = "SELECT SUPPLIER_ID,COMPANY_NAME,CONTACT_PERSON,CONTACT_NUMBER,EMAIL,ADDRESS FROM DATABASE.Supplier ORDER BY SUPPLIER_ID ASC";
+	    Statement state = MainClass.con.createStatement();
+	    ResultSet displaysupplier = state.executeQuery(display);
+	    System.out.println("Supplier Details");
+	    System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
+	    System.out.printf("%-12s %-20s %-18s %-17s %-30s %-25s\n",
+	            "SUPPLIER_ID", "COMPANY_NAME", "CONTACT_PERSON", "CONTACT_NUMBER", "EMAIL", "ADDRESS");
+	    System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 
-		while (displaysupplier.next()) {
-		    System.out.printf("%-12d %-20s %-18s %-17d %-30s %-25s\n",
-		            displaysupplier.getInt(1),
-		            displaysupplier.getString(2),
-		            displaysupplier.getString(3),
-		            displaysupplier.getLong(4),
-		            displaysupplier.getString(5),
-		            displaysupplier.getString(6));
-		            
-		}
-		System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
-
+	    while (displaysupplier.next()) {
+	        System.out.printf("%-12d %-20s %-18s %-17d %-30s %-25s\n",
+	                displaysupplier.getInt(1),
+	                displaysupplier.getString(2),
+	                displaysupplier.getString(3),
+	                displaysupplier.getLong(4),
+	                displaysupplier.getString(5),
+	                displaysupplier.getString(6));
+	    }
+	    System.out.println("-------------------------------------------------------------------------------------------------------------------------------------------------------------------");
 	}
 
 }

@@ -16,15 +16,15 @@ public class Account {
 	//Performs the login process for admin accounts.
 	public static void adminLogin() throws SQLException, ClassNotFoundException,InputMismatchException {
 	    Scanner sc = new Scanner(System.in);
-	    System.out.println("Enter Your User ID:");
-	    int userID = sc.nextInt();
+	    System.out.println("Enter Your User Name:");
+	    String userID = sc.next();
 	    sc.nextLine();
 	    System.out.println("Enter Your Password:");
 	    String password = sc.nextLine();
 
 	    int count = 0;
 	    for (Admin admin : Admin.adminList) {
-	        if (userID == admin.getUserID() && password.equals(admin.getPassword())) {
+	        if (userID.equals(admin.getUserName()) && password.equals(admin.getPassword())) {
 	            System.out.println("Login Successful");
 	            System.out.println("Welcome " + admin.getFullName());
 	            count++;

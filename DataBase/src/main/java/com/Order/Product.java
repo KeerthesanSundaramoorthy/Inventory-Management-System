@@ -203,7 +203,7 @@ public class Product {
 	}
 	//Displays the details of all products in a formatted manner.
 	public static void displayProduct() throws SQLException{
-		String display = "SELECT * from DATABASE.PRODUCT";
+		String display = "SELECT * from DATABASE.PRODUCT ORDER BY PRODUCT_ID ASC";
 		Statement state = MainClass.con.createStatement();
 		ResultSet displayproduct = state.executeQuery(display);
 		System.out.println("Product Details");
